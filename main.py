@@ -21,26 +21,30 @@ while game_running:
 
 
   def check():
-    print(f"Your cards: {user_cards}, current score : {sum(user_cards)}")
-    print(f"Computer's first card: {computer_cards[0]}")
-    if calculate_score(user_cards) == 0:
-      print("You win")
-      return False
-    elif calculate_score(computer_cards) == 0 or calculate_score(user_cards) > 21:
-      print("You lose")
-      return False
-    elif input("Do you want to draw another card? ").lower() == "yes":
-      user_cards.append(deal_card())
-      print("Your cards:", user_cards)
-      print("Your score:", calculate_score(user_cards))
-      if calculate_score(user_cards) > 21:
-        print("You went over. You lose.")
+    while True:
+      print(f"Your cards: {user_cards}, current score : {sum(user_cards)}")
+      print(f"Computer's first card: {computer_cards[0]}")
+      if calculate_score(user_cards) == 0:
+        print("You win")
         return False
+      elif calculate_score(computer_cards) == 0 or calculate_score(user_cards) > 21:
+        print("You lose")
+        return False
+      elif input("Do you want to draw another card? ").lower() == "yes":
+        user_cards.append(deal_card())
+        if calculate_score(user_cards) > 21:
+          print("You went over. You lose.")
+          return False
+      else:
+        return True
 
   check()
   
   while sum(computer_cards) < 17:
     computer_cards.append(deal_card())
+    while 11 in computer_cards and sum(computer_cards) > 21:
+      computer_cards.remove(11)
+      computer_cards.append(1)
   
   def compare(user_score, computer_score):
     if user_score == computer_score:
